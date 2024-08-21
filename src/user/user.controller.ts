@@ -10,6 +10,7 @@ import {
 } from '@nestjs/common';
 import { UserService } from './user.services';
 import { createUserDto } from './dto/createUser.dto';
+import { Public } from 'src/auth/auth.guard';
 
 @Controller('/users')
 export class UserController {
@@ -24,6 +25,7 @@ export class UserController {
     return this.userService.getUser(id);
   }
 
+  @Public()
   @Post()
   create(@Body() data: createUserDto) {
     return this.userService.create(data);

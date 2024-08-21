@@ -2,7 +2,7 @@ import { Repository } from 'typeorm';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './user.entity';
-import { createUserDto } from './dto/createUser.dto';
+import { createUserDto, updateUserDto } from './dto/createUser.dto';
 import { hashPassword } from 'src/utils/utils';
 
 @Injectable()
@@ -20,6 +20,10 @@ export class UserService {
     return await this.userRepository.findOneBy({ id });
   }
 
+  async getUserByEmail(email: string) {
+    return await this.userRepository.findOneBy({ email });
+  }
+
   async create(data: createUserDto) {
     const created_at = new Date().toISOString();
     const password = await hashPassword(data.password);
@@ -35,7 +39,8 @@ export class UserService {
     await this.userRepository.delete(id);
   }
 
-  async update(id: number, data: createUserDto) {
-    return await this.userRepository.update(id, data);
+  async update(id: number, data: updateUserDto) {
+    const { email, username } = data;
+    return await this.userRepository.update(id, { email, username });
   }
 }
