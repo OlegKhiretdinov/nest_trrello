@@ -44,6 +44,7 @@ export class UserController {
     return this.userService.remove(id);
   }
 
+  @UseGuards(SameUserGuard)
   @Put(':id')
   update(@Param('id', ParseIntPipe) id: number, @Body() data: updateUserDto) {
     return this.userService.update(id, data);
